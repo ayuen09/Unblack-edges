@@ -1,0 +1,10 @@
+Name: Anna Yuen, Camille Chan
+
+TAs: Ben London, Sammy Stolzenbach, Daniel Lan, Eloise Bisbee,
+ Miko Hadeshian, Emily Liu, Joah Simani, Byron Zhong
+
+The UArray2 and Bit2 have been implemented correctly into the sudoku and 
+unblackedges programs. We modularized the code the best we could, 
+using smaller and reuseable functions.  
+
+Worked on homework 3 for around 25 hours.

@@ -1,0 +1,180 @@
+#include <stdlib.h>
+#include "bit2.h"
+#include <stdbool.h>
+#include <pnmrdr.h>
+#include <stack.h>
+
+#define T Bit2_T
+const int SENL = -1;
+struct location{
+	int row;
+	int col;
+};
+
+T pbmread (FILE *inputfp/*, T *v*/){
+	Pnmrdr_T map = Pnmrdr_new(inputfp);
+ 	Pnmrdr_mapdata data = Pnmrdr_data(map);
+ 	// check data.width <= 70
+ 	T bit_map = Bit2_new(data.width, data.height);
+ 	for(int i = 0; i < (int)(data.width); i++){
+        for(int j = 0; j < (int)(data.height); j++){
+        	// fprintf(stderr, "i: %d, j: %d\n",i, j );
+          Bit2_put( bit_map, i, j, (int)Pnmrdr_get(map));
+          // Bit2_put(*v, i, j, SENL);
+        }
+  	}
+  	return bit_map;
+}
+
+void invert(int r, int c, T a, int bit_val){
+	if(bit_val == 1){
+		Bit2_put(a, r, c, 0);
+	}
+}
+
+S    check_n(Stack_T *recur, T bit_map){
+	location *curr;
+	bool changed = false;
+	if(curr.col != 0 && Bit2_get(bit_map, curr.row, curr.col-1)==1){
+		curr.col = curr.col -1;
+		Stack_push(*recur, curr);
+		change == true;
+	}
+	if(Bit2_get(bit_map, curr.row, curr.col+1)==1){
+		curr.col = curr.col +1;
+		Stack_push(*recur, curr);
+		change == true;
+	}
+	if(curr.row != 0 && Bit2_get(bit_map, curr.row-1, curr.col)==1){
+		curr.row = curr.row - 1; 
+		Stack_push(*recur, curr);
+		change == true;
+	}
+	if(Bit2_get(bit_map, curr.row, curr.col+1)==1){
+		curr.col = curr.col +1;
+		Stack_push(*recur, curr);
+		change == true;
+	}
+	return change;
+}
+
+void top_row(T bit_map, Stack_T recur){
+	location *curr; 
+	for(int i = 0; i < a->width; i++){
+		if( Bit2_get(bit_map, 0, i) == 1){
+			curr->row = 0;
+			curr->col = i;
+			Stack_push(recur, curr);
+			invert(curr->row, curr->col, )
+			while(Check_n(&recur, bit_map) == true){
+
+			}
+		}
+	}
+}
+
+
+
+
+
+// assuming bitmap has correct values
+void chkblkedges(T bit_map) {
+  Stack_T black = Stack_new(void); 
+  location curr;
+  location loc;
+  black = edgesadd(bit_map, black, curr);
+  while (Stack_empty(black) == 0) {
+    loc = Stack_pop(black);
+    int r = loc.row;
+    int c = loc.col;
+    int wid = Bit2_width(bit_map);
+    int hgt = Bit2_height(bit_map);
+    Bit2_put(black, r, c, 0); // changes the black edge into white
+    if (Bit2_get(bit_map, r, c) == 1) { // should check neighbors
+      check_n();
+    }
+    
+  }
+  
+}
+
+Stack_T edgesadd(T bit_map, Stack_T black, location curr) {
+  for (int r = 0; r < Bit2_height(bit_map); r ++) {
+    // col @ first and the last, likewise for the row
+    if (Bit2_get(bit_map, r, 0) == 1) {
+      curr.row = r;
+      curr.col = 0;
+      Stack_push(black, curr);
+    }
+    if (Bit2_get(bit_map, r, (Bit2_width(bit_map)-1) == 1) {
+      curr.row = r;
+      curr.col = (Bit2_width(bit_map)-1);
+      Stack_push(black, curr)1
+    }
+  }
+    // likewise for col...
+
+      
+    
+    return black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void writeBM(int r, int c, T a, int bit_val, void *p1){
+	(void) r;
+	if(c == Bit2_width(a)-1){
+		fprintf(p1, "\n");
+	}
+	// invert(r, c, a, bit_val, NULL);
+	fprintf(p1, "%d", Bit2_get(a, r, c));
+}
+
+void pbmwrite(FILE *outputfp, T bit_map){
+	Bit2_map_row_major(bit_map, writeBM, outputfp);
+}
+
+// void markedges(T *verify, T *bitmap);
+
+int main(int argc, char *argv[]) {
+	FILE *fptr;
+	FILE *outputfp;
+	Stack_T recur = Stack_new(void);
+	// T bitmap;
+	// T verify; 
+	if (argc == 1) {
+		fptr = stdin;
+		outputfp = stdout;
+		// /*bitmap = */pbmread(fptr);
+		// verify = Bit2_new(Bit2_width(bitmap), Bit2_height(bitmap));
+		pbmwrite(outputfp,pbmread(fptr));
+	}
+	else if (argc == 2) {
+		fptr = fopen(argv[1], "rb");
+		outputfp = stdout;
+		/*bitmap = */pbmread(fptr);
+		pbmwrite(outputfp,pbmread(fptr));
+		fclose(fptr);
+	}
+	else if (argc > 2){
+		fprintf(stderr, "\n" );
+	}
+	return EXIT_SUCCESS;
+}
